@@ -1,4 +1,5 @@
 var o = {
+	
 	init: function(){
 		this.diagram();
 	},
@@ -32,64 +33,30 @@ var o = {
 			return { path: path, stroke: color }
 		}
 		
+		var colors = ["#88B8E6", "#BEDBE9", "#EDEBEE", "#97BE0D", "#D84F5F"];
 		
-		var colors = ["#88B8E6", "#BEDBE9", "#EDEBEE", "#97BE0D", "#D84F5F"];  
 		$.ajax( {  
-		 url:'www.baidu.com',  
+		 url:'http://localhost:8080/rookie/api/getBeatInfo/100',  
 		 type: "GET",
-         dataType: 'json',		 
-		 success:function(data) {  
-			alert('success');
-			var info = data.beatinfo;
-			 for (var i = 0; i < info.length; i++) {
-			 
-				var css = "sk"+i;				
-				$("#issuelable_"+i).attr("class", css);
-				$("#issuelable_"+i).text(info[i].beat_issue);				
-					
-				$("#issue_"+i).text(info[i].beat_issue);
-				
+         dataType: 'json',
+		 async : false,
+		 success:function(data) {  			
+			var info = data.beatinfo;			
+			for (var i = 0; i < info.length; i++) {				
+								
+				$("#issue_"+i).text(info[i].beat_issue);				
 				$("#percentage_"+i).attr("value", info[i].beat_percentage);
 				$("#color_"+i).attr("value", colors[i]);
-				$("#count_"+i).attr("value", info[i].issue_count);
-								
-			} 	 
+				$("#count_"+i).attr("value", info[i].issue_count);								
+			}					
+			
 		  },  
 		  error : function() {  
-
-			var data = {"beatinfo":[
-					{
-						"beat_issue": "Cities Been To",
-						"issue_count": "8",// 去过的city 的数量
-						"beat_percentage": "54",
-					},
-					{
-						"beat_issue": "Total Cost",
-						"issue_count": "52634",// 在Expedia总共花费52634刀
-						"beat_percentage": "99",
-					}
-				]};
-			var info = data.beatinfo;
-	  		 for (var i = 0; i < info.length; i++) {
-			 
-				var css = "sk"+i;
-				
-				$("#issuelable_"+i).attr("class", css);
-				$("#issuelable_"+i).text(info[i].beat_issue);				
-					
-				$("#issue_"+i).text(info[i].beat_issue);
-				
-				$("#percentage_"+i).attr("value", info[i].beat_percentage);
-				$("#color_"+i).attr("value", colors[i]);
-				$("#count_"+i).attr("value", info[i].issue_count);
-				 				
-			}
 		  
 			alert('fail');
 			
 		  }  
-		});
-
+		});	
 		
 		$('.get').find('.arc').each(function(i){
 			var t = $(this), 
@@ -115,6 +82,7 @@ var o = {
 				});	
             });
 		});
+
 		
 	}
 }
