@@ -7,6 +7,16 @@ var o = {
 		return Math.floor((Math.random()*(u-l+1))+l);
 	},
 	diagram: function(){
+		var host = 'http://192.168.1.102:8080/rookie/';
+		 $.getUrlParam = function(name)
+		 {
+			 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+			 var r = window.location.search.substr(1).match(reg);
+			 if (r!=null) return unescape(r[2]); return null;
+		 }
+		 var cityid = $.getUrlParam('cityid');
+		 var userid = $.getUrlParam('userid');
+		
 		var r = Raphael('diagram', 600, 600),
 			rad = 73,
 			defaultText = 'Beat Other \nTravellers',
@@ -36,7 +46,7 @@ var o = {
 		var colors = ["#88B8E6", "#BEDBE9", "#EDEBEE", "#97BE0D", "#D84F5F"];
 		
 		$.ajax( {  
-		 url:'http://localhost:8080/rookie/api/getBeatInfo/100',  
+		 url: host + 'api/getBeatInfo/' + userid,  
 		 type: "GET",
          dataType: 'json',
 		 async : false,
@@ -73,7 +83,7 @@ var o = {
                 if(Raphael.type != 'VML') //solves IE problem
 				this.toFront();
 				title.stop().animate({ opacity: 0 }, speed, '>', function(){
-					this.attr({ text: desc + ' \n is '+ count + '.\n Beat ' + value + '% \n travellers' }).animate({ opacity: 1 }, speed, '<');
+					this.attr({ text: desc + ' \n : '+ count + '.\n Beat ' + value + '% \n travellers' }).animate({ opacity: 1 }, speed, '<');
 				});
             }).mouseout(function(){
 				this.stop().animate({ 'stroke-width': 26, opacity: 1 }, speed*4, 'elastic');

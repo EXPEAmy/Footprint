@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<title>Hotels You Are Interested In</title>
+
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+
+<link rel="stylesheet" type="text/css" href="css/set1.css" />
+
+<link rel="stylesheet" type="text/css" href="css/normalize.css">
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/number-pb.css">
+
+<script src="js/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+ $(function(){ 
+	var host = 'http://192.168.1.102:8080/rookie/';
+	 $.getUrlParam = function(name)
+	 {
+		 var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		 var r = window.location.search.substr(1).match(reg);
+		 if (r!=null) return unescape(r[2]); return null;
+	 }
+	 var cityid = $.getUrlParam('cityid');
+	 var userid = $.getUrlParam('userid');
+	
+	 if(cityid ==null){
+		 cityid = 1000;
+	 }
+	 
+	 if(userid ==null){
+		 userid = 100;
+	 }
+	 
+	$.ajax( {  
+	  url: host + 'api/getRecommendHotels/'+cityid,    
+      type:'get',  
+      dataType:'json', 
+	  async : false,	 
+      success:function(data) {  
+    	 
+ 		 var info = data.hotelinfo;
+ 		 //alert(JSON.stringify(info));
+		 for (var i = 0; i < info.length; i++) {
+				 var hotel_name = info[i].hotel_name;				 
+				 $("#hotel_name_"+i).text(hotel_name);
+				 var hotel_address = info[i].hotel_address;
+				 $("#hotel_addr_"+i).text(hotel_address);
+				 var hotel_detail_page_url = info[i].hotel_detail_page_url;
+				 $("#hotel_url_"+i).attr('href',hotel_detail_page_url);
+				 var hotel_picture_url = host + info[i].hotel_picture_url;
+				 $("#hotel_img_"+i).attr('src',hotel_picture_url);
+				 var price = info[i].price;
+				 $("#hotel_price_"+i).text('$'+price);	  
+		}	 	 
+      },  
+      error : function() {  
+	  	alert('getRecommendHotels fail');
+      }  
+	});
+	
+   function randomPercentage() {
+       return Math.floor(Math.random() * 100);
+     }
+
+     function randomStyle() {
+       return ['', 'dream', 'sun'][Math.floor(Math.random() * 3)];
+     }
+
+     var reachLoop = function() {
+       window.setTimeout(function() {
+         randomBar.reach(undefined, {
+           complete: reachLoop
+         }).find('.number-pb-shown').toggleClass(randomStyle());
+       }, 2000);
+     }
+      
+	$.ajax( {  
+		 url: host + 'api/getBeatInfo/'+userid,  
+		 type: "GET",
+         dataType: 'json',
+		 async : false,
+		 success:function(data) {  			
+			var info = data.beatinfo;	
+			//alert(JSON.stringify(info));
+			for (var i = 0; i < info.length; i++) {								
+				
+				if('Cities Been To'==info[i].beat_issue){
+					$("#title").text('Wahh...You have been to '+info[i].issue_count+' cities via Expedia');
+					
+					reachLoop();
+				    var num = info[i].beat_percentage;
+				    var controlTitle = $('#sample-pb .title').text(' You have beat '+ num +'% of members in expedia');
+				    var controlBar = $('#sample-pb .number-pb').NumberProgressBar({
+				      duration: 12000,
+				      current: num					
+			    	});
+				}
+			}								
+		  },  
+		  error : function() {  		  
+			alert('getBeatInfo fail');
+		  }  
+	});
+	
+ })
+ </script>
+</head>
+<body>
+<div class="div"></div>
+<div class="container">
+
+	<header class="codrops-header">
+		<h1>Hotels You Are Interested In</h1>
+
+	</header>
+	
+<div style="text-align:center;clear:both" >
+<h1 id="title" style="margin-top:100px"></h1>
+  <section id="sample-pb">
+    <article>
+      <h4 class="title"></h4>
+      <div class="number-pb">
+        <div class="number-pb-shown"></div>
+        <div class="number-pb-num">0</div>
+      </div>
+    </article>
+
+  </section>
+</div>
+
+	<div class="content">
+	
+		<h2></h2>
+		<div class="grid">		
+			<figure class="effect-milo">
+				<img id="hotel_img_0" src="" alt="img11"/>
+				<figcaption>
+					<h2 id="hotel_name_0"></h2>
+					<p id="hotel_addr_0"></p>
+					<p id="hotel_price_0"></p>
+					<a id="hotel_url_0" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>	
+			<figure class="effect-milo">
+				<img id="hotel_img_1" src="" alt="img03"/>
+				<figcaption>
+					<h2 id="hotel_name_1"></h2>
+					<p id="hotel_addr_1"></p>
+					<p id="hotel_price_1"></p>
+					<a id="hotel_url_1" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>
+		</div>
+		
+		<h2></h2>
+		<div class="grid">		
+			<figure class="effect-milo">
+				<img id="hotel_img_2" src="" alt="img11"/>
+				<figcaption>
+					<h2 id="hotel_name_2"></h2>
+					<p id="hotel_addr_2"></p>
+					<p id="hotel_price_2"></p>
+					<a id="hotel_url_2" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>	
+			<figure class="effect-milo">
+				<img id="hotel_img_3" src="" alt="img03"/>
+				<figcaption>
+					<h2 id="hotel_name_3"></h2>
+					<p id="hotel_addr_3"></p>
+					<p id="hotel_price_3"></p>
+					<a id="hotel_url_3" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>
+		</div>
+				
+		<h2></h2>
+		<div class="grid">		
+			<figure class="effect-milo">
+				<img id="hotel_img_4" src="" alt="img11"/>
+				<figcaption>
+					<h2 id="hotel_name_4"></h2>
+					<p id="hotel_addr_4"></p>
+					<p id="hotel_price_4"></p>
+					<a id="hotel_url_4" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>	
+			<figure class="effect-milo">
+				<img id="hotel_img_5" src="" alt="img03"/>
+				<figcaption>
+					<h2 id="hotel_name_5"></h2>
+					<p id="hotel_addr_5"></p>
+					<p id="hotel_price_5"></p>
+					<a id="hotel_url_5" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>
+		</div>				
+	
+		<h2></h2>
+		<div class="grid">		
+			<figure class="effect-milo">
+				<img id="hotel_img_6" src="" alt="img11"/>
+				<figcaption>
+					<h2 id="hotel_name_6"></h2>
+					<p id="hotel_addr_6"></p>
+					<p id="hotel_price_6"></p>
+					<a id="hotel_url_6" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>	
+			<figure class="effect-milo">
+				<img id="hotel_img_7" src="" alt="img03"/>
+				<figcaption>
+					<h2 id="hotel_name_7"></h2>
+					<p id="hotel_addr_7"></p>
+					<p id="hotel_price_7"></p>
+					<a id="hotel_url_7" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>
+		</div>	
+		
+		<h2></h2>
+		<div class="grid">		
+			<figure class="effect-milo">
+				<img id="hotel_img_8" src="" alt="img11"/>
+				<figcaption>
+					<h2 id="hotel_name_8"></h2>
+					<p id="hotel_addr_8"></p>
+					<p id="hotel_price_8"></p>
+					<a id="hotel_url_8" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>	
+			<figure class="effect-milo">
+				<img id="hotel_img_9" src="" alt="img03"/>
+				<figcaption>
+					<h2 id="hotel_name_9"></h2>
+					<p id="hotel_addr_9"></p>
+					<p id="hotel_price_9"></p>
+					<a id="hotel_url_9" target="_blank" href="">View more</a>
+				</figcaption>			
+			</figure>
+		</div>			
+	</div> 	
+</div>
+
+<script src="js/jquery.velocity.min.js"></script>
+<script src="js/number-pb.js"></script>
+</body>
+</html>
