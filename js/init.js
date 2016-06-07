@@ -73,7 +73,7 @@ var o = {
                 if(Raphael.type != 'VML') //solves IE problem
 				this.toFront();
 				title.stop().animate({ opacity: 0 }, speed, '>', function(){
-					this.attr({ text: desc + ' \n is '+ count + '.\n Beat ' + value + '% \n travellers' }).animate({ opacity: 1 }, speed, '<');
+					this.attr({ text: desc + ' :\n  '+ count + '.\n Beat ' + value + '% \n travellers' }).animate({ opacity: 1 }, speed, '<');
 				});
             }).mouseout(function(){
 				this.stop().animate({ 'stroke-width': 26, opacity: 1 }, speed*4, 'elastic');
